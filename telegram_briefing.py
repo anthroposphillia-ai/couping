@@ -20,7 +20,7 @@ if sys.stdout.encoding != 'utf-8':
 # ---------------------------------------------------------------------
 # 1. 설정 정보 (텔레그램 및 통계) - GitHub Secrets 우선 순위
 # ---------------------------------------------------------------------
-BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "7961956321:AAE_iOOf8v1rIdC7sH6zWlKj9qJovC42vR8")
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "7961956321:AAE_i00f8v1rIdC7sH6zWlKj9qJovC42vR8")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "1537446214")
 
 # 백테스팅 기반 핵심 통계
@@ -37,9 +37,10 @@ def send_telegram_msg(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"}
     try:
-        requests.post(url, data=payload)
+        res = requests.post(url, data=payload)
+        print(f"📡 Telegram API Response: {res.status_code} - {res.text}")
     except Exception as e:
-        print(f"Telegram error: {e}")
+        print(f"❌ Telegram error: {e}")
 
 def get_briefing():
     now_str = datetime.now().strftime('%Y-%m-%d %H:%M')

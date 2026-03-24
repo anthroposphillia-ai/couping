@@ -4,7 +4,7 @@ import os
 import sys
 
 # 텔레그램 봇 설정 (이미 확인된 토큰 활용)
-TELEGRAM_TOKEN = "7961956321:AAE_iOOf8v1rIdC7sH6zWlKj9qJovC42vR8"
+TELEGRAM_TOKEN = "7961956321:AAE_i00f8v1rIdC7sH6zWlKj9qJovC42vR8"
 CHAT_ID = "1537446214"
 
 def check_emergency_stop():
