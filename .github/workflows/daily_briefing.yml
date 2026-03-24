@@ -1,0 +1,33 @@
+name: Daily Stock Strategy Briefing
+
+on:
+  schedule:
+    # 매일 아침 08:40 KST (UTC 23:40) - 윈도우 스케줄러 대용
+    - cron: '40 23 * * *'
+  workflow_dispatch: # 수동 실행 버튼 추가
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests yfinance FinanceDataReader beautifulsoup4 pandas
+
+    - name: Run Daily Briefing
+      env:
+        # GitHub Secrets에 TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID 등록 필요
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        python telegram_briefing.py

@@ -1,0 +1,10 @@
+__pycache__/
+*.py[co]
+.venv/
+env/
+.env
+*.json
+!sector_db.json
+!trading_journal.json
+.vscode/
+.idea/

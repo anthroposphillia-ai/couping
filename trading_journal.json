@@ -1,0 +1,29 @@
+[
+    {
+        "score": 100,
+        "futures_change": -0.4762733911689695,
+        "simulated_gap": 1.2,
+        "action": "ENTRY_OK",
+        "date": "2026-03-24",
+        "status": "completed",
+        "actual_change": -2.81
+    },
+    {
+        "score": 100,
+        "futures_change": -0.42915817397806066,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-24",
+        "status": "pending"
+    },
+    {
+        "score": 100,
+        "futures_change": -0.37589749367529424,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-24",
+        "status": "pending"
+    }
+]
