@@ -25,5 +25,50 @@
         "action": "ENTRY_OK",
         "date": "2026-03-24",
         "status": "pending"
+    },
+    {
+        "score": 68,
+        "futures_change": -0.28883676625731053,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-24",
+        "status": "pending"
+    },
+    {
+        "score": 46,
+        "futures_change": -0.25913369454999846,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
+    },
+    {
+        "score": 47,
+        "futures_change": -0.2345518421025678,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
+    },
+    {
+        "score": 46,
+        "futures_change": -0.28576403470138173,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
+    },
+    {
+        "score": 46,
+        "futures_change": -0.26835188921778497,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
     }
 ]

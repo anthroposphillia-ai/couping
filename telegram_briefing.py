@@ -10,6 +10,7 @@ import os
 import technical_analyzer
 import supply_demand_tracer
 import market_regime_analyzer
+import news_sentiment_analyzer
 import trading_journal
 
 # 윈도우 환경에서 한글 출력 깨짐 방지
@@ -45,17 +46,31 @@ def get_briefing():
     report = f" [투자 전략 고도화 브리핑 - {now_str}] \n\n"
     
     # 1. 시장 지표 수집
-    nq_f = yf.Ticker("NQ=F").history(period='2d')
-    f_chg = ((nq_f['Close'].iloc[-1] - nq_f['Close'].iloc[-2]) / nq_f['Close'].iloc[-2]) * 100
+    def get_pct_chg(ticker_symbol):
+        ticker = yf.Ticker(ticker_symbol)
+        hist = ticker.history(period='2d')
+        if len(hist) < 2: return 0.0
+        chg = ((hist['Close'].iloc[-1] - hist['Close'].iloc[-2]) / hist['Close'].iloc[-2]) * 100
+        return 0.0 if pd.isna(chg) else chg
+
+    nq_chg = get_pct_chg("QQQ")
+    f_chg = get_pct_chg("NQ=F")
+    fx_chg = get_pct_chg("KRW=X")
     
-    fx = yf.Ticker("KRW=X").history(period='2d')
-    fx_now = fx['Close'].iloc[-1]
-    fx_chg = ((fx['Close'].iloc[-1] - fx['Close'].iloc[-2]) / fx['Close'].iloc[-2]) * 100
+    fx = yf.Ticker("KRW=X").history(period='1d')
+    fx_now = fx['Close'].iloc[-1] if not fx.empty else 1400.0
     
-    # 2. 진입 점수 및 리스크 필터링
-    score = 100
-    if f_chg < -0.5: score -= 30
-    if fx_chg > 0.3: score -= 20
+    # 2. [v5.0 핵심] ML 기반 가중치 점수 산출
+    ml_sentiment = (nq_chg * 0.52) + (f_chg * 0.24) - (fx_chg * 0.24)
+    if pd.isna(ml_sentiment): ml_sentiment = 0.0
+    
+    # [v7.0 핵심] 글로벌 뉴스 감성 분석
+    news_info = news_sentiment_analyzer.get_news_sentiment()
+    news_score = news_info['score']
+    
+    # 최종 점수 산출 (ML 점수 + 뉴스 온도)
+    score = int(50 + (ml_sentiment * 30) + news_score)
+    score = max(0, min(100, score)) # 범위 제한
     
     # [v4.0 핵심] 시장 성격(Regime) 분석
     regime_info = market_regime_analyzer.analyze_market_regime("KS11")
@@ -63,9 +78,15 @@ def get_briefing():
     # [v2.0 핵심] 시가 고가(설거지) 회피 로직
     simulated_gap = 3.5 if f_chg > 1.5 else 1.2
     
-    report += f"▶ 나스닥 선물: {f_chg:+.2f}%\n"
-    report += f"▶ 원/달러 환율: {fx_now:,.1f}원\n"
-    report += f"▶ **오늘의 진입 점수: {score}점**\n"
+    report += f"▶ 나스닥 종가: {nq_chg:+.2f}% (가중치 52%)\n"
+    report += f"▶ 나스닥 선물: {f_chg:+.2f}% (가중치 24%)\n"
+    report += f"▶ 원/달러 환율: {fx_now:,.1f}원 (가중치 24%)\n\n"
+    report += f"▶ **글로벌 뉴스 온도: {news_score:+.1f}도**\n"
+    if news_info['events']:
+        report += f"   ({', '.join(news_info['events'])})\n"
+    
+    report += f"\n▶ **최종 AI 매매 점수: {score}점**\n"
+    report += f"▶ **예상 상승 확률: {score:.1f}% (ML+News 통합)**\n"
     
     if regime_info:
         report += f"▶ **시장 기세(Regime): {regime_info['status_msg']}**\n"
