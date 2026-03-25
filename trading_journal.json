@@ -88,5 +88,23 @@
         "action": "ENTRY_OK",
         "date": "2026-03-25",
         "status": "pending"
+    },
+    {
+        "score": 0,
+        "futures_change": 0.03482429096719347,
+        "simulated_gap": 1.2,
+        "breakout_prob": 75,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
+    },
+    {
+        "score": 0,
+        "futures_change": 0.1280304814970348,
+        "simulated_gap": 1.2,
+        "breakout_prob": 75,
+        "action": "ENTRY_OK",
+        "date": "2026-03-25",
+        "status": "pending"
     }
 ]
