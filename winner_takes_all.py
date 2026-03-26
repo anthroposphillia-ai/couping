@@ -1,5 +1,6 @@
 import FinanceDataReader as fdr
 import pandas as pd
+import yfinance as yf
 from datetime import datetime
 import requests
 import sys
@@ -165,7 +166,30 @@ def run_sirius_905_scanner(strong_sectors):
     else:
         print("⏸ 조건 충족 종목 없음 (충분한 기운이 모이지 않았습니다.)")
 
+def get_strong_us_sectors():
+    """전일 미국 시장에서 상승한 섹터(ETF 기준) 자동 추출"""
+    strong_sectors = []
+    print("--- 🌍 전일 미국 시장 섹터별 성과 자동 분석 중 ---")
+    for key, config in sector_scanner.MASTER_SECTOR_KEYWORDS.items():
+        if config.get('us_match'):
+            ticker = config['us_match'][0] # 대표 ETF 또는 1등 종목
+            try:
+                df = yf.Ticker(ticker).history(period='2d')
+                if len(df) >= 2:
+                    change = ((df['Close'].iloc[-1] - df['Close'].iloc[-2]) / df['Close'].iloc[-2]) * 100
+                    if change > 0:
+                        strong_sectors.append(key)
+                        print(f"✅ {config['title']} ({ticker}): {change:+.2f}%")
+                    else:
+                        print(f"🔻 {config['title']} ({ticker}): {change:+.2f}%")
+            except Exception as e:
+                pass
+    return strong_sectors
+
 if __name__ == "__main__":
-    # 고도화된 시리우스 검색 시뮬레이션
-    # 예: 어제 미국장에서 반도체와 AI 소프트웨어가 강했을 때
-    run_sirius_905_scanner(["SEMICONDUCTOR", "AI_SOFTWARE"])
+    strong_sectors = get_strong_us_sectors()
+    if not strong_sectors:
+        print("전일 미국 시장 강세 섹터가 없어 기본값으로 진행합니다.")
+        strong_sectors = ["SEMICONDUCTOR", "AI_SOFTWARE"]
+        
+    run_sirius_905_scanner(strong_sectors)
