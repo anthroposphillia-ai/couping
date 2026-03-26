@@ -18,7 +18,8 @@ CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8627162144")
 def send_telegram_msg(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {"chat_id": CHAT_ID, "text": text, "parse_mode": "HTML"}
-    requests.post(url, data=payload)
+    res = requests.post(url, data=payload)
+    print(f"📡 Telegram Response: {res.status_code} - {res.text}")
 
 def filter_winner_takes_all(category_id):
     """
@@ -130,15 +131,14 @@ def run_sirius_905_scanner(strong_sectors):
             df_hist = fdr.DataReader(symbol, (datetime.now() - pd.Timedelta(days=5)).strftime('%Y%m%d'))
             prev_vol_full = df_hist['Volume'].iloc[-2]
             
-            # 필터 1: 등락률 3% 초과 (기세)
+            # 필터 1: 상승 기조 종목만 필터링 (0% 초과)
             day_chg = ((curr_close - curr_open) / curr_open) * 100
-            if day_chg < 3.0: continue
+            if day_chg <= 0.0: continue
             
-            # 필터 2: 거래량 폭발력 15% 돌파 (개장 5분 만에 전일 거래량의 15% 이상 달성)
+            # 필터 2: 전일 대비 거래량 비율 계산 (필터링 조건 삭제, 계산만 유지)
             vol_ratio = (curr_vol / prev_vol_full) * 100 if prev_vol_full > 0 else 0
-            if vol_ratio < 15.0: continue
             
-            # 필터 3: 체결강도/VPR 점수 (VPR로 대체하여 강도 측정)
+            # 필터 3: 체결강도/VPR 점수 (VPR로 대체하여 순위 정렬용 강도 측정)
             vpr_score = (day_chg * 2.0) + (vol_ratio * 0.5) 
             
             final_winners.append({
