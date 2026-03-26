@@ -31,3 +31,4 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
         python telegram_briefing.py
+        python winner_takes_all.py
