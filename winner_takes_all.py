@@ -152,17 +152,21 @@ def run_sirius_905_scanner(strong_sectors):
             continue
 
     # 3. 최종 보고서 전송
-    winners = sorted(final_winners, key=lambda x: x['score'], reverse=True)[:5]
+    winners = sorted(final_winners, key=lambda x: x['score'], reverse=True)[:10]
     if winners:
-        msg = f"<b>🛰️ [v10.0 Sirius 실시간 주도주 통보]</b>\n"
-        msg += f"어제 강했던 섹터({', '.join(strong_sectors)})에서 3중 필터를 통과한 '진짜 대장'들을 찾았습니다.\n\n"
+        kor_sectors = [sector_scanner.MASTER_SECTOR_KEYWORDS[s]['title'] for s in strong_sectors if s in sector_scanner.MASTER_SECTOR_KEYWORDS]
+        
+        msg = f"<b>🛰️ [v11.0 Sirius 실시간 주도주 통보]</b>\n"
+        msg += f"📈 <b>오늘 국장 공략 섹터 (나스닥 상승 동조)</b>:\n"
+        msg += f"👉 <b>{', '.join(kor_sectors)}</b>\n\n"
+        msg += f"위 강세 섹터 내에서 3중 필터를 통과한 '진짜 대장주 <b>TOP 10</b>'을 찾았습니다.\n\n"
         for i, w in enumerate(winners):
-            msg += f"{i+1}위: <b>{w['name']}</b> ({w['code']})\n"
-            msg += f"🚩 상승률: {w['chg']:+.2f}% | 거래폭발: {w['vol_ratio']:.1f}%\n"
+            msg += f"<b>{i+1}위: {w['name']}</b> ({w['code']})\n"
+            msg += f"🚩 상승률: {w['chg']:+.2f}% | 수급 폭발: {w['vol_ratio']:.1f}%\n"
             msg += f"📍 판단: <b>수급 임팩트 감지 - 즉각 대응 가능</b>\n\n"
             
         send_telegram_msg(msg)
-        print(f"v10.0 시리우스 포착 완료: {[w['name'] for w in winners]}")
+        print(f"v11.0 시리우스 포착 완료: {[w['name'] for w in winners]}")
     else:
         print("⏸ 조건 충족 종목 없음 (충분한 기운이 모이지 않았습니다.)")
 
