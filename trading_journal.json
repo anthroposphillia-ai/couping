@@ -106,5 +106,32 @@
         "action": "ENTRY_OK",
         "date": "2026-03-25",
         "status": "pending"
+    },
+    {
+        "score": 11,
+        "futures_change": 0.6896907748696505,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-26",
+        "status": "pending"
+    },
+    {
+        "score": 10,
+        "futures_change": 0.683495947550462,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-26",
+        "status": "pending"
+    },
+    {
+        "score": 0,
+        "futures_change": 0.6146442943148029,
+        "simulated_gap": 1.2,
+        "breakout_prob": 60,
+        "action": "ENTRY_OK",
+        "date": "2026-03-27",
+        "status": "pending"
     }
 ]

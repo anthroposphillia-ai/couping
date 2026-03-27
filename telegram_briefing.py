@@ -20,8 +20,9 @@ if sys.stdout.encoding != 'utf-8':
 # ---------------------------------------------------------------------
 # 1. 설정 정보 (텔레그램 및 통계) - GitHub Secrets 우선 순위
 # ---------------------------------------------------------------------
-BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8601832728:AAEZk8B2V1LkyLJAtcTDIwbhZMxS9Wa7GMI")
-CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8627162144")
+# 환경 변수가 빈 문자열("")일 경우를 위해 or 연산자 사용 (안정성 강화)
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN") or "8601832728:AAEZk8B2V1LkyLJAtcTDIwbhZMxS9Wa7GMI"
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID") or "8627162144"
 
 # 백테스팅 기반 핵심 통계
 WIN_RATE_SOXX = "67.57%"
