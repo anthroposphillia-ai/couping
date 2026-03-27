@@ -2,8 +2,8 @@ name: Daily Stock Strategy Briefing
 
 on:
   schedule:
-    # 매일 아침 08:40 KST (UTC 23:40) - 윈도우 스케줄러 대용
-    - cron: '40 23 * * *'
+    # 월~금 아침 08:40 KST (일~목 23:40 UTC)
+    - cron: '40 23 * * 0-4'
   workflow_dispatch: # 수동 실행 버튼 추가
 
 jobs:
