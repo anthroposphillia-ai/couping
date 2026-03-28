@@ -126,9 +126,9 @@ def get_briefing():
     return report
 
 if __name__ == "__main__":
-    # 주말(토, 일)에는 브리핑 생성 생략
-    if datetime.now().weekday() >= 5:
-        print("☕ 오늘은 시장이 쉬는 주말입니다. 편안한 휴식 되세요!")
+    # 일요일에는 브리핑 생성 생략 (토요일은 나스닥 결과 반영을 위해 실행)
+    if datetime.now().weekday() == 6:
+        print("☕ 오늘은 시장이 쉬는 일요일입니다. 편안한 휴식 되세요!")
         sys.exit(0)
 
     try:
